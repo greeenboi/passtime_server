@@ -11,11 +11,20 @@ const supabase = createClient(
 );
 
 app.get('/list', async (req, res) => {
-    const { data, error } = await supabase
-        .from('EmailingList')
-        .select('*')
-    if (error) return res.status(400).json({ error: error.message })
-    res.json(data)
+
+    try {
+        const { data, error } = await supabase
+            .from('EmailingList')
+            .select('*')
+            
+        if (error) return res.status(400).json({ error: error.message })
+        res.json(data)
+            
+    } catch (error) {
+        if (error) return res.status(400).json({ error: error.message })
+    
+    }
+
 });
 
 app.post('/add', async (req, res) => {

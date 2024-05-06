@@ -1,18 +1,9 @@
 const express = require("express");
 import {createClient} from '@supabase/supabase-js'
-import morgan from 'morgan'
-import bodyParser from "body-parser";
-
 require('dotenv').config()
 
 const app = express();
-
-
-// using morgan for logs
-app.use(morgan('combined'));
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(express.json());
 
 const supabase = createClient(
     process.env.SUPABASE_URL || '',

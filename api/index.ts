@@ -20,16 +20,24 @@ app.get('/list', async (req, res) => {
 
 app.post('/add', async (req, res) => {
     const { emailid, name, desc, hmm } = req.body
-    const { data, error } = await supabase
-        .from('EmailingList')
-        .insert({ 
-            email_id: emailid,
-            name: name,
-            desc: desc,
-            hmm: hmm
-        })
-    if (error) return res.status(400).json({ error: error.message })
-    res.json(data)
+
+    if (!emailid || !name || !desc || !hmm) {
+        return res.status(400).json({ error: 'Please provide all fields' })
+    }
+    try {
+        const { data, error } = await supabase
+            .from('EmailingList')
+            .insert({ 
+                email_id: emailid,
+                name: name,
+                desc: desc,
+                hmm: hmm
+            })
+        if (error) return res.status(400).json({ error: error.message })
+        res.status(201).send({ message: 'email added' });
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
 });
 
 app.get('/', (req, res) => {
